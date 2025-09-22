@@ -525,3 +525,59 @@ plt.text(x位置, y位置, '文本内容', fontsize=字体大小, color='颜色'
 plt.text(5, 0, '峰值', fontsize=12, color='red
 ') # 在坐标(5,0)处添加文本'峰值'    
 
+
+
+
+
+
+
+#基础设置模块
+import numpy as np
+import pandas as pd
+from scipy import stats
+import matplotlib.pyplot as plt
+import seaborn as sns
+import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
+#产生符合条件的随机样本点
+data_points = np.random.normal(loc=78, scale=15, size=10000)
+
+#使用stats.gaussian_kde()绘制核密度估计曲线（KDE）
+kde = stats.gaussian_kde(data_points) # 计算KDE
+x_range = np.linspace(data_points.min(), data_points.max(), 1000) # 生成x轴数据
+kde_values = kde(x_range) # 计算对应的KDE值
+plt.plot(x_range, kde_values, color='blue') # 绘制KDE曲线
+
+plt.fill_between(x_range, kde_values, color='blue', alpha=0.3) #填充曲线下的区域
+plt.title('Kernel Density Estimation (KDE) with scipy.stats')
+plt.xlabel('Value')
+plt.ylabel('Density')
+plt.show()
+
+#使用seaborn绘制核密度估计曲线（KDE）
+sns.kdeplot(data_points, color='green', fill=True, alpha=0.3) # 绘制KDE曲线并填充
+plt.title('Kernel Density Estimation (KDE) with Seaborn')
+plt.xlabel('Value')
+plt.ylabel('Density')
+plt.show()
+
+#使用plotly绘制核密度估计曲线（KDE）
+fig = px.histogram(data_points, nbins=50, marginal='rug', opacity=
+0.5, histnorm='density', title='KDE with Plotly')
+fig.add_trace(go.Scatter(x=x, y=kde_values, mode='lines', name='KDE Curve', line=dict(color='red')))
+fig.show()  
+
+#找均值mean
+data_points.mean()
+
+#找标准差std
+data_points.std(ddof=1)
+
+#找小于多少的累计概率 
+q8 = stats.expon.cdf(5, scale=6) （exponential 分布 ） （P(X < 5) = 0.5654）
+print(f'P(X < 5) = {q8:.4f}')
+
+q11 = stats.binom.pmf(7, n=10, p=0.7) （binomial 分布 ） （P(X = 7) = 0.2668）
+print(f'P(X = 7) = {q11:.4f}')
